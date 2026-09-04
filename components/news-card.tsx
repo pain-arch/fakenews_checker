@@ -45,6 +45,12 @@ export function NewsCard({
           sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 400px"
           className="news-card__image"
         />
+        <Link className="news-card__info" href={href} aria-label={`Open analysis for ${title}`}>
+          <svg aria-hidden="true" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="7.75" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M10 9v5M10 6.25h.01" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+          </svg>
+        </Link>
       </div>
       <div className="news-card__body">
         <div className="news-card__meta">
@@ -55,9 +61,9 @@ export function NewsCard({
         <h3 className="news-card__title">
           <Link href={href}>{title}</Link>
         </h3>
-        <div className="news-card__signals">
+        <div className="news-card__signals" aria-label="Article analysis summary">
           <span className={`signal-label signal-label--${sentimentLabel}`}>{sentimentLabel} sentiment</span>
-          <span className="signal-label">AI-estimated: {framingLabel}</span>
+          <span className="signal-label">AI-estimated framing: {framingLabel}</span>
           {safeConfidence !== undefined && (
             <span className="news-card__confidence">{Math.round(safeConfidence * 100)}% confidence</span>
           )}
@@ -67,13 +73,8 @@ export function NewsCard({
           center={centerPercentage}
           right={rightPercentage}
           label="AI-estimated framing"
+          variant="compact"
         />
-        <Link className="news-card__link" href={href}>
-          Read the full analysis
-          <svg aria-hidden="true" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8h10m-4-4 4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </Link>
       </div>
     </article>
   );

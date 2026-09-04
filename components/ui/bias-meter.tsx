@@ -4,6 +4,7 @@ type BiasMeterProps = {
   right: number;
   className?: string;
   label?: string;
+  variant?: "default" | "compact";
 };
 
 type NormalizedFraming = {
@@ -45,23 +46,32 @@ export function BiasMeter({
   right,
   className = "",
   label = "AI-estimated political framing",
+  variant = "default",
 }: BiasMeterProps) {
   const values = normalizeFraming(left, center, right);
   const ariaLabel = `${label}: left ${formatPercentage(values.left)}, center ${formatPercentage(values.center)}, right ${formatPercentage(values.right)}`;
 
   return (
-    <figure className={`bias-meter ${className}`.trim()} aria-label={ariaLabel}>
-      <figcaption className="bias-meter__title">{label}</figcaption>
+    <figure className={`bias-meter bias-meter--${variant} ${className}`.trim()} aria-label={ariaLabel}>
+      <figcaption className={variant === "compact" ? "sr-only" : "bias-meter__title"}>{label}</figcaption>
       <div className="bias-meter__track" aria-hidden="true">
-        <span className="bias-meter__segment bias-meter__segment--left" style={{ width: `${values.left}%` }} />
-        <span className="bias-meter__segment bias-meter__segment--center" style={{ width: `${values.center}%` }} />
-        <span className="bias-meter__segment bias-meter__segment--right" style={{ width: `${values.right}%` }} />
+        <span className="bias-meter__segment bias-meter__segment--left" style={{ width: `${values.left}%` }}>
+          {variant === "compact" && <span>Left {formatPercentage(values.left)}</span>}
+        </span>
+        <span className="bias-meter__segment bias-meter__segment--center" style={{ width: `${values.center}%` }}>
+          {variant === "compact" && <span>Center {formatPercentage(values.center)}</span>}
+        </span>
+        <span className="bias-meter__segment bias-meter__segment--right" style={{ width: `${values.right}%` }}>
+          {variant === "compact" && <span>Right {formatPercentage(values.right)}</span>}
+        </span>
       </div>
-      <div className="bias-meter__legend">
-        <span><i className="bias-meter__dot bias-meter__dot--left" />Left <strong>{formatPercentage(values.left)}</strong></span>
-        <span><i className="bias-meter__dot bias-meter__dot--center" />Center <strong>{formatPercentage(values.center)}</strong></span>
-        <span><i className="bias-meter__dot bias-meter__dot--right" />Right <strong>{formatPercentage(values.right)}</strong></span>
-      </div>
+      {variant === "default" && (
+        <div className="bias-meter__legend">
+          <span><i className="bias-meter__dot bias-meter__dot--left" />Left <strong>{formatPercentage(values.left)}</strong></span>
+          <span><i className="bias-meter__dot bias-meter__dot--center" />Center <strong>{formatPercentage(values.center)}</strong></span>
+          <span><i className="bias-meter__dot bias-meter__dot--right" />Right <strong>{formatPercentage(values.right)}</strong></span>
+        </div>
+      )}
     </figure>
   );
 }

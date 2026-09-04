@@ -1,3 +1,4 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import type { ReactNode } from "react";
@@ -19,7 +20,30 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={roboto.variable}>
-      <body>{children}</body>
+      <body>
+        <ClerkProvider
+          afterSignOutUrl="/"
+          appearance={{
+            variables: {
+              borderRadius: "8px",
+              colorBackground: "#ffffff",
+              colorBorder: "#dce3de",
+              colorDanger: "#8b3f25",
+              colorForeground: "#063b25",
+              colorMuted: "#f1f5f1",
+              colorMutedForeground: "#596860",
+              colorPrimary: "#0a5d2d",
+              colorPrimaryForeground: "#ffffff",
+              colorRing: "#78e66b",
+              colorSuccess: "#247a4b",
+              fontFamily: "Roboto, Arial, sans-serif",
+              spacing: "1rem",
+            },
+          }}
+        >
+          {children}
+        </ClerkProvider>
+      </body>
     </html>
   );
 }
