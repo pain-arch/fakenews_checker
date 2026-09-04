@@ -1,7 +1,9 @@
+import { connection } from "next/server";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { TopNewsGrid } from "@/components/top-news-grid";
 import { Chip } from "@/components/ui/chip";
+import { listLatestAnalyzedArticles } from "@/lib/supabase/queries/articles";
 
 const topics = [
   "World",
@@ -14,7 +16,10 @@ const topics = [
   "Sports",
 ] as const;
 
-export default function Home() {
+export default async function Home() {
+  await connection();
+  const articles = await listLatestAnalyzedArticles();
+
   return (
     <div className="editorial-shell">
       <SiteHeader />
@@ -36,7 +41,7 @@ export default function Home() {
             </div>
             <span>AI-assisted context for a more informed read</span>
           </div>
-          <TopNewsGrid articles={[]} />
+          <TopNewsGrid articles={articles} />
         </section>
       </main>
 
